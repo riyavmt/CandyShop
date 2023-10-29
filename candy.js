@@ -2,7 +2,7 @@ const myForm= document.getElementById("myShop");
 const list = document.getElementById("candyList");
 myForm.addEventListener("submit",addCandy);
 
-function addCandy(e){
+async function addCandy(e){
     e.preventDefault();
     const candyShop={
         name:e.target.name.value,
@@ -10,11 +10,13 @@ function addCandy(e){
         price:e.target.price.value,
         qty:e.target.quantity.value
     };
-    axios.post(`https://crudcrud.com/api/006e7efadeef47bc8f58c3292e1e0d7a/candyList`,candyShop)
-    .then((res)=>{
-        add(res.data)
-    })
-    .catch((err)=>console.log(err))
+    try{
+        const res = await axios.post(`https://crudcrud.com/api/12e1943393904352b500a37028f549b8/candyList`,candyShop);
+        add(res.data);
+    }
+    catch(err){
+        console.log(err);
+    }
 }
 
 function add(data){
@@ -27,15 +29,18 @@ function add(data){
     list.append(li);
 }
 
-window.addEventListener("DOMContentLoaded",()=>{
-    axios.get(`https://crudcrud.com/api/006e7efadeef47bc8f58c3292e1e0d7a/candyList`)
-    .then((res) => {
-        res.data.forEach((element) => add(element))
-    })
-    .catch(err=> console.log(err));
+window.addEventListener("DOMContentLoaded",async()=>{
+    try{
+        const res= await axios.get(`https://crudcrud.com/api/12e1943393904352b500a37028f549b8/candyList`);
+        res.data.forEach((element) => add(element));
+    }
+    catch(err){
+        console.log(err);
+
+    } 
 })
 
-function dec(total,id){
+async function dec(total,id){
     const li= document.getElementById(id);
     const text = li.innerText;
     const newText= text.split('-');
@@ -48,13 +53,14 @@ function dec(total,id){
             price: newText[2],
             qty: quantity-total 
         };
-    
-        axios.put(`https://crudcrud.com/api/006e7efadeef47bc8f58c3292e1e0d7a/candyList/${id}`,updateCandy)
-        .then((res)=>{
+        try{
+            axios.put(`https://crudcrud.com/api/12e1943393904352b500a37028f549b8/candyList/${id}`,updateCandy);
             li.firstElementChild.innerHTML= quantity-total;
-        })
+        }
+        catch(err){
+            console.log(err);
+        }
     }
-    
     else{
         alert("No enough candies Left")
     }
