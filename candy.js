@@ -17,7 +17,9 @@ async function addCandy(e){
     catch(err){
         console.log(err);
     }
+    myForm.reset();
 }
+
 
 function add(data){
     const li= document.createElement("li");
@@ -39,6 +41,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
 
     } 
 })
+
 
 async function dec(total,id){
     const li= document.getElementById(id);
